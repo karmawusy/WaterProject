@@ -23,7 +23,7 @@ public class KnobView extends LinearLayout {
     public static final int GRAD_TYPE5 = 5;
     public static final int KNOB_TYPE5 = 5;
 
-
+    private boolean isPause = false;
 
     LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     View view = inflater.inflate(R.layout.activity_knob, this, true);
@@ -132,6 +132,9 @@ public class KnobView extends LinearLayout {
         total_Count = max_Value + 1;
     }
 
+    public void setPause(boolean pause) {
+        isPause = pause;
+    }
 
     // Class routine =================================================================
     public void initialize() {
@@ -142,35 +145,40 @@ public class KnobView extends LinearLayout {
                 int action = event.getAction();
                 int actionCode = action & MotionEvent.ACTION_MASK;
 
-                if (actionCode == MotionEvent.ACTION_POINTER_DOWN) {
-                    float x = event.getX(0);
-                    float y = event.getY(0);
+                if (!isPause) {
 
-                    float theta = (getTheta(x, y) < 90 ? getTheta(x, y) + 360 : getTheta(x, y));
-                    current_Value = (int) (total_Count * ((angle + start_Angle) - low_Angle) / (high_Angle - low_Angle));
-                } else if (actionCode == MotionEvent.ACTION_MOVE) {
-                    float x = event.getX(0);
-                    float y = event.getY(0);
+                    if (actionCode == MotionEvent.ACTION_POINTER_DOWN) {
+                        float x = event.getX(0);
+                        float y = event.getY(0);
 
-                    float theta = (getTheta(x, y) < 90 ? getTheta(x, y) + 360 : getTheta(x, y));
-                    current_Value = (int) (total_Count * ((angle + start_Angle) - low_Angle) / (high_Angle - low_Angle));
+                        float theta = (getTheta(x, y) < 90 ? getTheta(x, y) + 360 : getTheta(x, y));
+                        current_Value = (int) (total_Count * ((angle + start_Angle) - low_Angle) / (high_Angle - low_Angle));
+                    } else if (actionCode == MotionEvent.ACTION_MOVE) {
+                        float x = event.getX(0);
+                        float y = event.getY(0);
 
-                    if ((theta - start_Angle) > (low_Angle - start_Angle) && (theta - start_Angle) < (high_Angle - start_Angle)) {
-                        angle = theta - start_Angle;
+                        float theta = (getTheta(x, y) < 90 ? getTheta(x, y) + 360 : getTheta(x, y));
+                        current_Value = (int) (total_Count * ((angle + start_Angle) - low_Angle) / (high_Angle - low_Angle));
+
+                        if ((theta - start_Angle) > (low_Angle - start_Angle) && (theta - start_Angle) < (high_Angle - start_Angle)) {
+                            angle = theta - start_Angle;
+                            if (null != listener)
+                                listener.onKnobChanged(current_Value);
+                        }
+
+                        if (loaded && old_Value != current_Value) {
+
+                            old_Value = current_Value;
+                        }
+
+                        drawKnob();
+
+                    } else if (actionCode == MotionEvent.ACTION_UP) {
                         if (null != listener)
-                            listener.onKnobChanged(current_Value);
+                            listener.onKnobChangedComplete(current_Value);
                     }
-
-                    if (loaded && old_Value != current_Value) {
-
-                        old_Value = current_Value;
-                    }
-
-                    drawKnob();
-
-                } else if (actionCode == MotionEvent.ACTION_UP) {
-                    if (null != listener)
-                        listener.onKnobChangedComplete(current_Value);
+                }else{
+                    return false;
                 }
 
                 return true;

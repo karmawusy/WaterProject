@@ -2,6 +2,7 @@ package cn.wsy.water.views;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,6 +24,8 @@ public class KnobTableView extends FrameLayout{
     //声明接口
     private ViewOpenEditPop popListener;
 
+    private boolean isPause = false;
+
     public KnobTableView(Context context){
         super(context);
         init(context);
@@ -33,6 +36,11 @@ public class KnobTableView extends FrameLayout{
         this.popListener=popListener;
         init(context);
 
+    }
+
+    public void setPause(boolean pause) {
+        isPause = pause;
+        this.knobView.setPause(true);
     }
 
     public void setPopListener(ViewOpenEditPop popListener) {
@@ -62,24 +70,33 @@ public class KnobTableView extends FrameLayout{
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        if (event.getAction() == MotionEvent.ACTION_DOWN){
-            dx = event.getX();
-            dy = event.getY();
+        if (isPause) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                dx = event.getX();
+                dy = event.getY();
+                Log.i("wusy","knob down");
 
-        }else if (event.getAction() == MotionEvent.ACTION_UP){
-            /**以松开手移动距离作为判定标准！！！！**/
-            float moveX = event.getX() - dx;
-            float moveY = event.getY() - dy;
+            } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                /**以松开手移动距离作为判定标准！！！！**/
+                float moveX = event.getX() - dx;
+                float moveY = event.getY() - dy;
 
-            if (moveX < 0){moveX = -moveX;}
-            if (moveY < 0){moveY = -moveY;}
+                if (moveX < 0) {
+                    moveX = -moveX;
+                }
+                if (moveY < 0) {
+                    moveY = -moveY;
+                }
 
-            if ((popListener !=null &&moveX>5)||(popListener !=null &&moveY>5)){
-                popListener.dimissPopWindow();
-            }else{
-                if(popListener!=null)
-                popListener.showEditPopWindow(Contacts.KNOBTABLE_TYPE, this,R.layout.knob_layout);
+                if ((popListener != null && moveX > 5) || (popListener != null && moveY > 5)) {
+                    popListener.dimissPopWindow();
+                } else {
+                    if (popListener != null)
+                        popListener.showEditPopWindow(Contacts.KNOBTABLE_TYPE, this, R.layout.knob_layout);
+                }
             }
+        }else{
+            return true;
         }
         return true;
     }

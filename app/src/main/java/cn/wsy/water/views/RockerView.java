@@ -235,19 +235,6 @@ public class RockerView extends SurfaceView implements Runnable, SurfaceHolder.C
                 if (listener != null) {
                     listener.onSteeringWheelChanged(ACTION_RUDDER, 0);
                 }
-                float moveX = event.getX() - dx;
-                float moveY = event.getY() - dy;
-
-                if (moveX < 0){moveX = -moveX;}
-                if (moveY < 0){moveY = -moveY;}
-
-                if ((popListener !=null &&moveX>5)||(popListener !=null &&moveY>5)){
-                    popListener.dimissPopWindow();
-                }else{
-                    if(popListener !=null){
-                        popListener.showEditPopWindow(Contacts.ROCKERVIEW_TYPE, this,R.layout.analogstick_layout);
-                    }
-                }
             }
 
             if (event.getAction() == MotionEvent.ACTION_MOVE) {
@@ -279,6 +266,27 @@ public class RockerView extends SurfaceView implements Runnable, SurfaceHolder.C
 //            }else{
 //                isMove = true;
 //            }
+
+            if (event.getAction() == MotionEvent.ACTION_DOWN){
+                dx = event.getX();
+                dy = event.getY();
+            }
+
+            if (event.getAction() == MotionEvent.ACTION_UP){
+                float moveX = event.getX() - dx;
+                float moveY = event.getY() - dy;
+
+                if (moveX < 0){moveX = -moveX;}
+                if (moveY < 0){moveY = -moveY;}
+
+                if ((popListener !=null &&moveX>5)||(popListener !=null &&moveY>5)){
+                    popListener.dimissPopWindow();
+                }else{
+                    if(popListener !=null){
+                        popListener.showEditPopWindow(Contacts.ROCKERVIEW_TYPE, this,R.layout.analogstick_layout);
+                    }
+                }
+            }
         }
         return true;
 

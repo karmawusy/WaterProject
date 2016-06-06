@@ -6,12 +6,20 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
+
+import cn.wsy.water.R;
+import cn.wsy.water.interfaces.ViewOpenEditPop;
 
 /**
  * Created by wsy on 2016/5/27.
  */
 public class WheelVidget extends Button {
+
+    private ViewOpenEditPop popListener;
 
     private Paint bgPaint = new Paint();
     private Paint inPaint = new Paint();
@@ -24,7 +32,7 @@ public class WheelVidget extends Button {
     private boolean isEnableOnclik = true;
 
     private int defualt_color = Color.BLACK;
-    private int press_color = Color.RED;
+    private int press_color = getResources().getColor(R.color.app_main_color);
 
     public WheelVidget(Context context) {
         super(context);
@@ -37,18 +45,33 @@ public class WheelVidget extends Button {
         init();
     }
 
+
     private void init() {
         setBackgroundColor(Color.TRANSPARENT);
+        int w = MeasureSpec.makeMeasureSpec(0,
+                MeasureSpec.UNSPECIFIED);
+        int h = MeasureSpec.makeMeasureSpec(0,
+                MeasureSpec.UNSPECIFIED);
+        this.measure(w, h);
+        VIEW_HEIGHT = this.getMeasuredHeight();
+        RECT_WIDTH = this.getMeasuredWidth();
+        Log.i("wusy","real w is :"+RECT_WIDTH+" h is :"+VIEW_HEIGHT);
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasWindowFocus) {
         super.onWindowFocusChanged(hasWindowFocus);
-        RECT_WIDTH = getWidth();
-        VIEW_HEIGHT = getHeight();
-        invalidate();
+//        RECT_WIDTH = getWidth();
+//        VIEW_HEIGHT = getHeight();
+//        Log.i("wusy","real w is :"+RECT_WIDTH+" h is :"+VIEW_HEIGHT);
+//        invalidate();
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (isEnableOnclik){return false;}
+        return super.onTouchEvent(event);
+    }
 
     public void setEnableOnclik(boolean enableOnclik) {
         this.isEnableOnclik = enableOnclik;
@@ -68,7 +91,7 @@ public class WheelVidget extends Button {
                 }
 
                 //画矩形
-                canvas.drawRect(0, 0, RECT_WIDTH, VIEW_HEIGHT * 3 / 5, bgPaint);
+                canvas.drawRect(0, 0, RECT_WIDTH, VIEW_HEIGHT * 2 / 5, bgPaint);
                 //绘画三角形
                 Path path = new Path();
                 path.moveTo(RECT_WIDTH / 2, VIEW_HEIGHT);
@@ -95,7 +118,7 @@ public class WheelVidget extends Button {
                     bgPaint.setColor(press_color);
                 }
 
-                canvas.drawRect(0, 0, RECT_WIDTH * 3 / 5, VIEW_HEIGHT, bgPaint);
+                canvas.drawRect(0, 0, RECT_WIDTH * 2 / 5, VIEW_HEIGHT, bgPaint);
 
                 //绘画三角形
                 Path path = new Path();
@@ -123,19 +146,9 @@ public class WheelVidget extends Button {
         isOnclick = onclick;
     }
 
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        if (this.isEnableOnclik) {
-//            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-//                isOnclick = true;
-//                invalidate();
-//                return super.onTouchEvent(event);
-//            } else if (event.getAction() == MotionEvent.ACTION_UP) {
-//                isOnclick = false;
-//                invalidate();
-//                return super.onTouchEvent(event);
-//            }
-//        }
-//        return false;
-//    }
+    public void setPopListener(ViewOpenEditPop popListener) {
+        this.popListener = popListener;
+    }
+
+
 }

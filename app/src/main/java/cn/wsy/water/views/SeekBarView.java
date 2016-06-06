@@ -23,6 +23,7 @@ public class SeekBarView extends FrameLayout {
     private boolean isPause;
     private SeekBar seekBar;
     private ViewOpenEditPop popListener;
+    private View myView;
 
     public SeekBarView(Context context) {
         super(context);
@@ -59,9 +60,8 @@ public class SeekBarView extends FrameLayout {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void init(Context context) {
-        View view = LayoutInflater.from(context).inflate(R.layout.view_my_seekbar, this);
-        seekBar = (SeekBar) view.findViewById(R.id.my_seekbar);
-
+        myView = LayoutInflater.from(context).inflate(R.layout.view_my_seekbar, this);
+        seekBar = (SeekBar) myView.findViewById(R.id.my_seekbar);
 
         //添加屏蔽开关
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

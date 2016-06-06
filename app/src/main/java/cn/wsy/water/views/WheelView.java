@@ -1,7 +1,7 @@
 package cn.wsy.water.views;
 
 import android.content.Context;
-import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,13 +26,10 @@ public class WheelView extends RelativeLayout {
 
     private ViewOpenEditPop popListener;
 
+    private boolean isPause = false;
+
     public WheelView(Context context) {
         super(context);
-        init(context);
-    }
-
-    public WheelView(Context context, AttributeSet attrs) {
-        super(context, attrs);
         init(context);
     }
 
@@ -42,8 +39,19 @@ public class WheelView extends RelativeLayout {
         init(context);
     }
 
+    public WheelView(Context context, ViewOpenEditPop popListener, boolean isPause) {
+        super(context);
+        this.popListener = popListener;
+        this.isPause = isPause;
+        init(context);
+    }
+
     public void setPopListener(ViewOpenEditPop popListener) {
         this.popListener = popListener;
+    }
+
+    public void setPause(boolean pause) {
+        isPause = pause;
     }
 
     private void init(Context context) {
@@ -68,13 +76,33 @@ public class WheelView extends RelativeLayout {
                     popListener.showEditPopWindow(Contacts.WHELLVIEW_TYPE, view, R.layout.dpad_layout);
                 }
             });
-        }else{
+        } else {
+//            parentLayout.setVisibility(GONE);
             setOntouchAction(leftBtn);
             setOntouchAction(rightBtn);
             setOntouchAction(upBtn);
             setOntouchAction(downBtn);
         }
     }
+
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent ev) {
+//        //遍历获取view触摸点
+//        if (popListener != null) {
+//            for (int i = 0; i < getChildCount(); i++) {
+//                if (getChildAt(i) == parentLayout && getChildAt(i).dispatchTouchEvent(ev)) {
+//                    return true;//拦截
+//                }
+//            }
+//        }
+//        return super.dispatchTouchEvent(ev);
+//    }
+//
+//    @Override
+//    public boolean onInterceptTouchEvent(MotionEvent ev) {
+//        return super.onInterceptTouchEvent(ev);
+//    }
+
 
     private void initOnClick(OnClickListener leftListener, OnClickListener rightListener, OnClickListener upListerner, OnClickListener downListener) {
 
@@ -92,15 +120,17 @@ public class WheelView extends RelativeLayout {
 
     float dx = 0, dy = 0;
 
-    private void setOntouchAction(final WheelVidget wheelVidget){
+    private void setOntouchAction(final WheelVidget wheelVidget) {
 
         wheelVidget.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    wheelVidget.setEnableOnclik(false);
                     wheelVidget.setIsOnclick(true);
                     wheelVidget.invalidate();
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    wheelVidget.setEnableOnclik(false);
                     wheelVidget.setIsOnclick(false);
                     wheelVidget.invalidate();
                 }
@@ -111,42 +141,51 @@ public class WheelView extends RelativeLayout {
 
     }
 
-    private void setOnClickAction(final WheelVidget wheelVidget){
-        wheelVidget.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popListener.showEditPopWindow(Contacts.WHELLVIEW_TYPE, view, R.layout.dpad_layout);
-            }
-        });
+    private void setOnClickAction(final WheelVidget wheelVidget) {
+        Log.i("wusy", "setOnClickAction");
+        wheelVidget.setPopListener(popListener);
+//        wheelVidget.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.i("wusy", "wheel btn onclick");
+//                popListener.showEditPopWindow(Contacts.WHELLVIEW_TYPE, view, R.layout.dpad_layout);
+//            }
+//        });
+
+
+
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (isPause) {
 
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            dx = event.getX();
-            dy = event.getY();
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                dx = event.getX();
+                dy = event.getY();
 
-        } else if (event.getAction() == MotionEvent.ACTION_UP) {
-            /**以松开手移动距离作为判定标准！！！！**/
-            float moveX = event.getX() - dx;
-            float moveY = event.getY() - dy;
+            } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                /**以松开手移动距离作为判定标准！！！！**/
+                float moveX = event.getX() - dx;
+                float moveY = event.getY() - dy;
 
-            if (moveX < 0) {
-                moveX = -moveX;
-            }
-            if (moveY < 0) {
-                moveY = -moveY;
-            }
+                if (moveX < 0) {
+                    moveX = -moveX;
+                }
+                if (moveY < 0) {
+                    moveY = -moveY;
+                }
+                if ((popListener != null && moveX > 5) || (popListener != null && moveY > 5)) {
+                    popListener.dimissPopWindow();
+                } else {
+                    if (popListener != null)
+                        popListener.showEditPopWindow(Contacts.WHELLVIEW_TYPE, this, R.layout.dpad_layout);
+                }
 
-            if ((popListener != null && moveX > 5) || (popListener != null && moveY > 5)) {
-                popListener.dimissPopWindow();
-            } else {
-                if (popListener != null)
-                    popListener.showEditPopWindow(Contacts.WHELLVIEW_TYPE, this, R.layout.dpad_layout);
+                return false;
             }
         }
-        return true;
+        return false;
     }
 
 
