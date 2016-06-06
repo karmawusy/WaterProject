@@ -283,6 +283,7 @@ public class EditFragment extends Fragment implements ViewOpenEditPop {
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.CENTER;
         switchView.setLayoutParams(params);
+        switchView.setSwitch(true);
         addViews(switchView);
         return switchView;
     }

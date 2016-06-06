@@ -83,7 +83,7 @@ public class KnobView extends LinearLayout {
         Log.v("Height", String.valueOf(height));
 
 		/*
-		if(width>0 && height>0)
+        if(width>0 && height>0)
 		{
 			if(width > height)
 			{
@@ -177,7 +177,7 @@ public class KnobView extends LinearLayout {
                         if (null != listener)
                             listener.onKnobChangedComplete(current_Value);
                     }
-                }else{
+                } else {
                     return false;
                 }
 

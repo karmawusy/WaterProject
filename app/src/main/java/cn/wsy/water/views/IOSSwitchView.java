@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.Property;
 import android.util.TypedValue;
 import android.view.GestureDetector;
@@ -24,10 +25,10 @@ import cn.wsy.water.R;
  */
 public class IOSSwitchView extends View {
 
- //   private static final int foregroundColor = 0xFFEFEFEF;
- //   private static final int backgroundColor = 0xFFCCCCCC;
+    //   private static final int foregroundColor = 0xFFEFEFEF;
+    //   private static final int backgroundColor = 0xFFCCCCCC;
     private static final int foregroundColor = 0xff000000;
-   private static final int backgroundColor = 0xff000000;
+    private static final int backgroundColor = 0xff000000;
 
     private int colorStep = backgroundColor;
     private int mTintColor;
@@ -304,29 +305,41 @@ public class IOSSwitchView extends View {
         }
     }
 
+    private boolean isSwitch = false;
+
+    public void setSwitch(boolean isswitch) {
+        isSwitch = isswitch;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (!isEnabled()) return false;
+        if (!isSwitch) {
+            Log.i("shero","12345---->"+isSwitch);
+            switch (event.getAction()) {
 
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
+                case MotionEvent.ACTION_UP:
+                    break;
+                case MotionEvent.ACTION_CANCEL:
 
-                if (!thumbState) {
-                    mInnerContentAnimator.setFloatValues(innerContentRate, 1.0f);
-                    mInnerContentAnimator.start();
-                }
+                    if (!thumbState) {
+                        mInnerContentAnimator.setFloatValues(innerContentRate, 1.0f);
+                        mInnerContentAnimator.start();
+                    }
 
-                mThumbExpandAnimator.setFloatValues(thumbExpandRate, 0.0f);
-                mThumbExpandAnimator.start();
+                    mThumbExpandAnimator.setFloatValues(thumbExpandRate, 0.0f);
+                    mThumbExpandAnimator.start();
 
-                isOn = thumbState;
+                    isOn = thumbState;
 
-                if (mOnSwitchStateChangeListener != null && isOn != preIsOn) {
-                    mOnSwitchStateChangeListener.onStateSwitched(isOn);
-                }
+                    if (mOnSwitchStateChangeListener != null && isOn != preIsOn) {
+                        mOnSwitchStateChangeListener.onStateSwitched(isOn);
+                    }
+                    break;
 
-                break;
+            }
+        } else {
+            return false;
         }
 
         return mGestureDetector.onTouchEvent(event);

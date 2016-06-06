@@ -71,6 +71,7 @@ public class KnobTableView extends FrameLayout{
     public boolean onTouchEvent(MotionEvent event) {
 
         if (isPause) {
+
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 dx = event.getX();
                 dy = event.getY();
