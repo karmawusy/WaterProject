@@ -6,8 +6,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.sevenheaven.iosswitch.ShSwitchView;
-
 import cn.wsy.water.R;
 import cn.wsy.water.app.Contacts;
 import cn.wsy.water.interfaces.ViewOpenEditPop;
@@ -17,7 +15,7 @@ import cn.wsy.water.interfaces.ViewOpenEditPop;
  */
 public class SwitchView extends FrameLayout {
     private View view;
-    private ShSwitchView switchView;
+    private IOSSwitchView switchView;
     private Context context;
     private ViewOpenEditPop popListener;
     public SwitchView(Context context) {
@@ -42,8 +40,8 @@ public class SwitchView extends FrameLayout {
     private void init(Context context) {
         this.context=context;
         view= LayoutInflater.from(context).inflate(R.layout.view_switch_layout,this);
-        switchView= (ShSwitchView) view.findViewById(R.id.switch_view);
-        switchView.setOn(true);
+        switchView= (IOSSwitchView) view.findViewById(R.id.switch_view);
+
 
     }
     float dx=0,dy=0;

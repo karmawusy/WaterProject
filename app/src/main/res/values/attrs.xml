@@ -17,4 +17,11 @@
         <attr name="current_value" format="float"/>
         <attr name="max_value" format="float"/>
     </declare-styleable>
+    <!-- IOSSwitchView -->
+    <declare-styleable name="IOSSwitchView">
+        <attr name="tintColors" format="reference|color" />
+        <attr name="thumbTintColor" format="reference|color" />
+        <attr name="strokeWidth" format="reference|dimension" />
+        <attr name="isOn" format="reference|boolean" />
+    </declare-styleable>
 </resources>
