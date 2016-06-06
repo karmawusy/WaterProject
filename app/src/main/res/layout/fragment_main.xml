@@ -1,0 +1,16 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_contaner_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="cn.wsy.water.MainFragment">
+
+    <TextView
+        android:id="@+id/main_noview_tip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="暫時沒有佈局"
+        android:gravity="center"
+        />
+
+</FrameLayout>

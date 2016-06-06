@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:descendantFocusability= "blocksDescendants"
+    >
+
+    <TextView
+        android:id="@+id/my_layout_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:drawableLeft="@drawable/my_layout_item"
+        android:layout_marginLeft="10dp"
+        android:text="name" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        >
+
+        <TextView
+            android:id="@+id/my_layout_item_time"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:gravity="center_vertical"
+            android:text="time" />
+
+        <ImageButton
+            android:id="@+id/my_layout_item_edit"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/edit_img"
+            android:background="@color/app_main_color"
+            android:layout_marginRight="1dp"
+            android:focusable = "false"
+            />
+
+        <ImageButton
+            android:id="@+id/my_layout_item_delete"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/delete_img"
+            android:background="@color/app_main_color"
+            android:layout_marginRight="10dp"
+            android:focusable = "false"
+            />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

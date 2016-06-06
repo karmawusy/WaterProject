@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/grey">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom = "true"
+        android:background="@color/grey"
+        android:id= "@+id/bt_bottombar">
+
+        <TextView android:id="@+id/start_seach"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="Finding..."/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/grey"/>
+    <ListView
+        android:id="@+id/bluetooth_device"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bt_bottombar"
+        android:background="@color/white"
+        android:divider="@color/grey"
+        android:dividerHeight="2dp"
+        android:layout_margin="3dp"></ListView>
+
+</RelativeLayout>

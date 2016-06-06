@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="150dp"
+    android:layout_height="150dp"
+    android:gravity="center"
+    android:id="@+id/wheel_layout"
+    >
+
+    <RelativeLayout
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        >
+
+        <TextView
+            android:id="@+id/view_wheel_center"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_centerInParent="true"
+            android:background="#00000000" />
+
+        <cn.wsy.water.views.WheelVidget
+            android:layout_width="50dp"
+            android:layout_height="38dp"
+            android:id="@+id/wheel_left_btn"
+            android:layout_toLeftOf="@id/view_wheel_center"
+            android:layout_centerVertical="true"
+            />
+
+        <cn.wsy.water.views.WheelVidget
+            android:layout_width="50dp"
+            android:layout_height="38dp"
+            android:id="@+id/wheel_right_btn"
+            android:rotation="180"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/view_wheel_center"
+            />
+
+        <cn.wsy.water.views.WheelVidget
+            android:layout_width="38dp"
+            android:layout_height="50dp"
+            android:id="@+id/wheel_bottom_btn"
+            android:rotation="180"
+            android:layout_below="@id/view_wheel_center"
+            android:layout_centerHorizontal="true"
+            />
+
+        <cn.wsy.water.views.WheelVidget
+            android:layout_width="38dp"
+            android:layout_height="50dp"
+            android:id="@+id/wheel_top_btn"
+            android:layout_above="@+id/view_wheel_center"
+            android:layout_centerHorizontal="true"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>
