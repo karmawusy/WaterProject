@@ -47,7 +47,10 @@ import java.util.List;
 import java.util.Set;
 
 import cn.wsy.water.adapters.BlueItemAdapter;
+import cn.wsy.water.adapters.MyLayoutAdapter;
 import cn.wsy.water.app.BlueDevice;
+import cn.wsy.water.app.ViewApplication;
+import cn.wsy.water.db.LayoutIndexBean;
 import cn.wsy.water.views.MyListview;
 
 
@@ -94,6 +97,11 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
     private BlueDevice mBlueDevice;
     private TextView device_name;
     private TextView device_address;
+
+    //mylayout
+    private MyListview layoutListview;
+    List<LayoutIndexBean> layoutIDs = new ArrayList<>();
+    private MyLayoutAdapter layoutAdapter;
 
 
     private Handler handler = new Handler() {
@@ -395,6 +403,7 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
     private void initView() {
         instance = this;
         leftListview = (MyListview) findViewById(R.id.listview_views);
+        layoutListview = (MyListview) findViewById(R.id.listview_layout);
         opreationLv = (MyListview) findViewById(R.id.listview_action);
         drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer);
         drawerTogglerBtn = (ImageView) findViewById(R.id.main_drawer_btn);
@@ -403,8 +412,8 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
         deleteBtn = (Button) findViewById(R.id.btn_layout_delete);
         titleTv = (TextView) findViewById(R.id.main_title);
         change_device = (TextView) findViewById(R.id.tv_change_deivice);
-        device_name=(TextView)findViewById(R.id.device_name);
-        device_address=(TextView)findViewById(R.id.device_address);
+        device_name = (TextView) findViewById(R.id.device_name);
+        device_address = (TextView) findViewById(R.id.device_address);
         //btserch.setOnClickListener(new ClinckMonitor());
         leftListview.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, views));
@@ -412,7 +421,12 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
         opreationLv.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, opreations));
 
-        leftListview.setEnabled(false);
+
+        layoutIDs = ViewApplication.getInstance().getLayoutIDs();
+
+        layoutAdapter = new MyLayoutAdapter(layoutIDs, this, false);
+
+        layoutListview.setAdapter(layoutAdapter);
 
     }
 
@@ -437,6 +451,42 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
             @Override
             public void onClick(View v) {
                 openDrawer();
+            }
+        });
+
+        drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                ViewApplication.getInstance().readDataBaseForView();
+                layoutIDs = ViewApplication.getInstance().getLayoutIDs();
+                layoutAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
+
+        layoutListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                ViewApplication.getInstance().readView(layoutIDs.get(position).getLayout_id());
+
+                MainActivity.instance.showMyLayout();
+
+                closeDrawer();
             }
         });
 
