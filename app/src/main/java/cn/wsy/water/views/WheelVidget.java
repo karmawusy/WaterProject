@@ -6,9 +6,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 
 import cn.wsy.water.R;
@@ -48,14 +47,18 @@ public class WheelVidget extends Button {
 
     private void init() {
         setBackgroundColor(Color.TRANSPARENT);
-        int w = MeasureSpec.makeMeasureSpec(0,
-                MeasureSpec.UNSPECIFIED);
-        int h = MeasureSpec.makeMeasureSpec(0,
-                MeasureSpec.UNSPECIFIED);
-        this.measure(w, h);
-        VIEW_HEIGHT = this.getMeasuredHeight();
-        RECT_WIDTH = this.getMeasuredWidth();
-        Log.i("wusy","real w is :"+RECT_WIDTH+" h is :"+VIEW_HEIGHT);
+        ViewTreeObserver viewTreeObserver = this.getViewTreeObserver();
+        viewTreeObserver
+                .addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                    @Override
+                    public boolean onPreDraw() {
+                        VIEW_HEIGHT = getMeasuredHeight();
+                        RECT_WIDTH = getMeasuredWidth();
+//                        Log.i("wusy", "real w is :" + RECT_WIDTH + " h is :" + VIEW_HEIGHT);
+                        return true;
+                    }
+                });
+
     }
 
     @Override
@@ -63,13 +66,15 @@ public class WheelVidget extends Button {
         super.onWindowFocusChanged(hasWindowFocus);
 //        RECT_WIDTH = getWidth();
 //        VIEW_HEIGHT = getHeight();
-//        Log.i("wusy","real w is :"+RECT_WIDTH+" h is :"+VIEW_HEIGHT);
+//        Log.i("wusy"," w is :"+RECT_WIDTH+" h is :"+VIEW_HEIGHT);
 //        invalidate();
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (isEnableOnclik){return false;}
+        if (isEnableOnclik) {
+            return false;
+        }
         return super.onTouchEvent(event);
     }
 
@@ -82,7 +87,7 @@ public class WheelVidget extends Button {
         super.onDraw(canvas);
         if (RECT_WIDTH > 0) {
 
-            if (RECT_WIDTH < VIEW_HEIGHT) {
+            if (RECT_WIDTH < VIEW_HEIGHT) {//上下
 
                 if (!isOnclick) {
                     bgPaint.setColor(defualt_color);
@@ -91,7 +96,7 @@ public class WheelVidget extends Button {
                 }
 
                 //画矩形
-                canvas.drawRect(0, 0, RECT_WIDTH, VIEW_HEIGHT * 2 / 5, bgPaint);
+                canvas.drawRect(0, 0, RECT_WIDTH, VIEW_HEIGHT * 3 / 5, bgPaint);
                 //绘画三角形
                 Path path = new Path();
                 path.moveTo(RECT_WIDTH / 2, VIEW_HEIGHT);
@@ -118,7 +123,7 @@ public class WheelVidget extends Button {
                     bgPaint.setColor(press_color);
                 }
 
-                canvas.drawRect(0, 0, RECT_WIDTH * 2 / 5, VIEW_HEIGHT, bgPaint);
+                canvas.drawRect(0, 0, RECT_WIDTH * 3 / 5, VIEW_HEIGHT, bgPaint);
 
                 //绘画三角形
                 Path path = new Path();

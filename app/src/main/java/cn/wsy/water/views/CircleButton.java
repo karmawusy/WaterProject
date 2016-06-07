@@ -43,7 +43,7 @@ public class CircleButton extends BaseButton {
         this.context = context;
         defaultStyle();
         setText("B");
-        setTextSize(35);
+        setTextSize(20);
 
         if (popListener !=null){
             popListener.showEditPopWindow(Contacts.CIRCLEBUTTON_TYPE,this,R.layout.button_layout);

@@ -146,6 +146,43 @@ public class AgainEditFragment extends Fragment implements ViewOpenEditPop {
         }
     }
 
+    public void createView(int viewType){
+        View view = null;
+
+        switch (viewType) {
+            case 0:
+                view = ViewEditProvider.createRockerView(getActivity(),this);
+                break;
+            case 1:
+                view = ViewEditProvider.createWeelView(getActivity(),this);
+                break;
+            case 2:
+                view = ViewEditProvider.createSeekBar(getActivity(),this);
+                break;
+            case 3:
+                view = ViewEditProvider.createCircleButton(getActivity(),this);
+                break;
+            case 4:
+                view = ViewEditProvider.createSwitchView(getActivity(),this);
+                break;
+            case 5:
+                view = ViewEditProvider.createThreeView(getActivity(),this);
+                break;
+            case 6:
+                view = ViewEditProvider.createKnobView(getActivity(),this);
+                break;
+            case 7:
+                view = ViewEditProvider.createOutputView(getActivity(),this);
+                break;
+        }
+
+        if (view !=null){
+
+            addViews(view);
+
+        }
+    }
+
     public void addViews(View view) {
         tvTip.setVisibility(View.GONE);
         mainLayout.addView(view);

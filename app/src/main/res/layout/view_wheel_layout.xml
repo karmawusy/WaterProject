@@ -13,14 +13,14 @@
 
         <TextView
             android:id="@+id/view_wheel_center"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
             android:layout_centerInParent="true"
             android:background="#00000000" />
 
         <cn.wsy.water.views.WheelVidget
             android:layout_width="50dp"
-            android:layout_height="38dp"
+            android:layout_height="45dp"
             android:id="@+id/wheel_left_btn"
             android:layout_toLeftOf="@id/view_wheel_center"
             android:layout_centerVertical="true"
