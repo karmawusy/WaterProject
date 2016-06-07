@@ -63,6 +63,7 @@ public class CircleButton extends BaseButton {
         if (this.pressColor != -1) {
             GradientDrawable bgShape = (GradientDrawable) this.getBackground();
             bgShape.setColor(this.pressColor );
+
         }
     }
 
@@ -73,6 +74,7 @@ public class CircleButton extends BaseButton {
 
         if (isNotMove()) {
             if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
+                setBtnPressBackgroundColor(getResources().getColor(R.color.green));
                 changeStyle();
             }
 

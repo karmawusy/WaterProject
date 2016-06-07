@@ -247,7 +247,7 @@ public class EditFragment extends Fragment implements ViewOpenEditPop {
 
 
     public WheelView createWeelView() {
-        WheelView wheelView = new WheelView(getActivity(), this,true);
+        WheelView wheelView = new WheelView(getActivity(), this,false);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.CENTER;
         wheelView.setLayoutParams(params);
