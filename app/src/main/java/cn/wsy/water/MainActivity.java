@@ -77,7 +77,7 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
 
     public static MainActivity instance;
 
-    private int fragmentTAG = -1;//0 MAIN 1 EDIT 2 AGINEDIT 用于标识不同的fragment时的区分
+    private int fragmentTAG = 0;//0 MAIN 1 EDIT 2 AGINEDIT 用于标识不同的fragment时的区分
 
     //傳感器
     private SensorManager mSensorManager;
@@ -133,10 +133,15 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
                 showSaveBtn();
 
             } else if (msg.what == 1002) {
+                transaction = fragmentManager.beginTransaction();
+                if (fragmentTAG == 0){
+                    //如果已经是本身替换即可
+                 mainFragment.initView();
+                    return ;
+                }
 
                 fragmentTAG = 0;
 
-                transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.main_contaner, mainFragment);
                 transaction.commit();
                 leftListview.setEnabled(false);
@@ -467,7 +472,8 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
             public void onDrawerOpened(View drawerView) {
                 ViewApplication.getInstance().readDataBaseForView();
                 layoutIDs = ViewApplication.getInstance().getLayoutIDs();
-                layoutAdapter.notifyDataSetChanged();
+                layoutAdapter = new MyLayoutAdapter(layoutIDs,MainActivity.this,false);
+               layoutListview.setAdapter(layoutAdapter);
             }
 
             @Override
@@ -619,11 +625,11 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
         Log.i("kevin", "生命周期结束");
     }
 
-    private void openDrawer() {
+    public void openDrawer() {
         drawerLayout.openDrawer(slDrawerLayout);
     }
 
-    private void closeDrawer() {
+    public void closeDrawer() {
         drawerLayout.closeDrawer(slDrawerLayout);
     }
 

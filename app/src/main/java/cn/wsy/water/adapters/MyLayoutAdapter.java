@@ -91,9 +91,11 @@ public class MyLayoutAdapter extends BaseAdapter {
 
                 //缓存中读取layout
                 ViewApplication.getInstance().readView(bean.getLayout_id());
-
-                ((Activity)context).finish();
-
+                if (isShowAll) {
+                    ((Activity) context).finish();
+                }else{
+                    MainActivity.instance.closeDrawer();
+                }
                 MainActivity.instance.showAgainEditLayout();
             }
         });
