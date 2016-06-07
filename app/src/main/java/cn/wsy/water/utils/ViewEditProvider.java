@@ -26,7 +26,7 @@ public class ViewEditProvider {
 
     //默认
 
-    public SeekBarView createSeekBar(Context context,ViewOpenEditPop listener) {
+    public static SeekBarView createSeekBar(Context context,ViewOpenEditPop listener) {
         SeekBarView seekBarView = new SeekBarView(context,listener);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.CENTER;
@@ -36,7 +36,7 @@ public class ViewEditProvider {
     }
 
 
-    public WheelView createWeelView(Context context,ViewOpenEditPop listener) {
+    public static WheelView createWeelView(Context context,ViewOpenEditPop listener) {
         WheelView wheelView = new WheelView(context,listener);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.CENTER;
@@ -44,7 +44,7 @@ public class ViewEditProvider {
         return wheelView;
     }
 
-    public RockerView createRockerView(Context context,ViewOpenEditPop listener) {
+    public static RockerView createRockerView(Context context,ViewOpenEditPop listener) {
         RockerView rockerView = new RockerView(context, listener);
         rockerView.setRockerBg(BitmapFactory.decodeResource(context.getResources(), R.drawable.rocket_bg));
         rockerView.setIsPause(true);
@@ -55,7 +55,7 @@ public class ViewEditProvider {
     }
 
     //圆按钮
-    public CircleButton createCircleButton(Context context,ViewOpenEditPop listener) {
+    public static CircleButton createCircleButton(Context context,ViewOpenEditPop listener) {
         CircleButton view = new CircleButton(context, listener);/** 必须注入才能回调打开pop*/
         view.setIsMove(true);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(200,200);
@@ -65,7 +65,7 @@ public class ViewEditProvider {
     }
 
     //开关
-    public SwitchView createSwitchView(Context context,ViewOpenEditPop listener) {
+    public static SwitchView createSwitchView(Context context,ViewOpenEditPop listener) {
         SwitchView switchView = new SwitchView(context,listener);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.CENTER;
@@ -74,7 +74,7 @@ public class ViewEditProvider {
     }
 
     //量程表
-    public KnobTableView createKnobView(Context context,ViewOpenEditPop listener) {
+    public static KnobTableView createKnobView(Context context,ViewOpenEditPop listener) {
         KnobTableView knobView = new KnobTableView(context,listener);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.CENTER;
@@ -83,7 +83,7 @@ public class ViewEditProvider {
     }
 
     //输出框
-    public OutputView createOutputView(Context context,ViewOpenEditPop listener) {
+    public static OutputView createOutputView(Context context,ViewOpenEditPop listener) {
         OutputView outputView = new OutputView(context,listener);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(650, 450);
         params.gravity = Gravity.CENTER;
@@ -93,7 +93,7 @@ public class ViewEditProvider {
     }
 
     //三轴加速器
-    public ThreeView createThreeView(Context context,ViewOpenEditPop listener) {
+    public static ThreeView createThreeView(Context context,ViewOpenEditPop listener) {
         ThreeView threeView = new ThreeView(context,listener);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(350, 290);
         params.gravity = Gravity.CENTER;
@@ -116,7 +116,7 @@ public class ViewEditProvider {
 
 
     public static WheelView createWeelView(Context context,int x, int y, int defalutColor, int pressColor,ViewOpenEditPop listener) {
-        WheelView wheelView = new WheelView(context);
+        WheelView wheelView = new WheelView(context,listener,true);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(x, y, 0, 0);
         wheelView.setLayoutParams(params);
@@ -141,7 +141,7 @@ public class ViewEditProvider {
     public static CircleButton createCircleButton(Context context,int x, int y, int defalutColor, int pressColor,ViewOpenEditPop listener) {
 
         CircleButton view = new CircleButton(context);
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(200,200);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(150,150);
         params.setMargins(x, y, 0, 0);
         view.setLayoutParams(params);
 //        view.setX(x);

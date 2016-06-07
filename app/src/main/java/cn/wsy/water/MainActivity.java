@@ -73,7 +73,7 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
     private EditFragment editFragment;
     private AgainEditFragment againEditFragment;
 
-    private TextView titleTv;
+    private EditText titleTv;
 
     public static MainActivity instance;
 
@@ -118,7 +118,7 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
                 transaction.replace(R.id.main_contaner, editFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
-
+                titleTv.setEnabled(false);
                 showSaveBtn();
 
             } else if (msg.what == 1001) {
@@ -128,7 +128,8 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
                 transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.main_contaner, againEditFragment);
                 transaction.commit();
-
+                leftListview.setEnabled(true);
+                titleTv.setEnabled(true);
                 showSaveBtn();
 
             } else if (msg.what == 1002) {
@@ -138,7 +139,8 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
                 transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.main_contaner, mainFragment);
                 transaction.commit();
-
+                leftListview.setEnabled(false);
+                titleTv.setEnabled(false);
                 hidDeleteBtn();
                 hidSaveBtn();
             } else if (msg.what == 1) {
@@ -410,7 +412,8 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
         slDrawerLayout = (ScrollView) findViewById(R.id.sl_drawer_layout);
         saveBtn = (Button) findViewById(R.id.btn_layout_save);
         deleteBtn = (Button) findViewById(R.id.btn_layout_delete);
-        titleTv = (TextView) findViewById(R.id.main_title);
+        titleTv = (EditText) findViewById(R.id.main_title);
+        titleTv.setEnabled(false);
         change_device = (TextView) findViewById(R.id.tv_change_deivice);
         device_name = (TextView) findViewById(R.id.device_name);
         device_address = (TextView) findViewById(R.id.device_address);
@@ -498,40 +501,42 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
                     Toast.makeText(MainActivity.this, "請先創建佈局！", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                switch (position) {
-                    case 0://摇杆
+                if (fragmentTAG == 1) {
+                    switch (position) {
+                        case 0://摇杆
+                            EditFragment.instance.createRockerView();
+                            break;
+                        case 1://方向盤
+                            EditFragment.instance.createWeelView();
 
-                        EditFragment.instance.createRockerView();
+                            break;
+                        case 2://滑杆
+                            EditFragment.instance.createSeekBar();
 
-                        break;
-                    case 1://方向盤
-                        EditFragment.instance.createWeelView();
+                            break;
+                        case 3://按鈕
+                            EditFragment.instance.createCircleButton();
 
-                        break;
-                    case 2://滑杆
-                        EditFragment.instance.createSeekBar();
+                            break;
+                        case 4://開關
+                            EditFragment.instance.createSwitchView();
 
-                        break;
-                    case 3://按鈕
-                        EditFragment.instance.createCircleButton();
+                            break;
+                        case 5://三軸加速度傳感器
+                            EditFragment.instance.createThreeView();
 
-                        break;
-                    case 4://開關
-                        EditFragment.instance.createSwitchView();
+                            break;
+                        case 6://量程表
+                            EditFragment.instance.createKnobView();
 
-                        break;
-                    case 5://三軸加速度傳感器
-                        EditFragment.instance.createThreeView();
+                            break;
+                        case 7://文本顯示框
+                            EditFragment.instance.createOutputView();
 
-                        break;
-                    case 6://量程表
-                        EditFragment.instance.createKnobView();
-
-                        break;
-                    case 7://文本顯示框
-                        EditFragment.instance.createOutputView();
-
-                        break;
+                            break;
+                    }
+                } else {
+                    againEditFragment.createView(position);
                 }
             }
         });
@@ -554,7 +559,15 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog();
+                if (fragmentTAG == 1) {
+                    showDialog();
+                } else if (fragmentTAG == 2) {
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日    HH:mm:ss     ");
+                    Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+                    String time = formatter.format(curDate);
+                    String name = titleTv.getText().toString();
+                    againEditFragment.saveAllViewsToDB(name, time);
+                }
             }
         });
 
@@ -632,6 +645,9 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
 
     public void setTitle(String title) {
         titleTv.setText(title);
+        if (title.length() > 0){
+            titleTv.setSelection(title.length());
+        }
     }
 
     /**
@@ -680,8 +696,6 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
                 } else {
                     if (fragmentTAG == 1) {
                         editFragment.saveAllViewsToDB(name, time);
-                    } else if (fragmentTAG == 2) {
-                        againEditFragment.saveAllViewsToDB(name, time);
                     }
                     dialog.dismiss();
                 }

@@ -270,7 +270,7 @@ public class EditFragment extends Fragment implements ViewOpenEditPop {
     public CircleButton createCircleButton() {
         CircleButton view = new CircleButton(getActivity(), this);/** 必须注入才能回调打开pop*/
         view.setIsMove(true);
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(200, 200);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(150, 150);
         params.gravity = Gravity.CENTER;
         view.setLayoutParams(params);
         addViews(view);

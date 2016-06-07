@@ -67,7 +67,7 @@ public class ViewShowProvider {
     //圆按钮
     public static CircleButton createCircleButton(Context context, int x, int y, int defalutColor, int pressColor) {
         CircleButton view = new CircleButton(context);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(200, 200);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(150, 150);
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
         view.setLayoutParams(params);
         view.setX(x);
