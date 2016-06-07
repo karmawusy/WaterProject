@@ -134,7 +134,7 @@ public class ViewShowProvider {
                 // 发送消息
                 handle.sendMessage(message);
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(600);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
@@ -150,7 +150,7 @@ public class ViewShowProvider {
                 // 发送消息
                 handle2.sendMessage(message);
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(600);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }

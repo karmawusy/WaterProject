@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
@@ -25,6 +24,7 @@ public class OutputView extends BaseView {
 
     public OutputView(Context context) {
         super(context);
+
     }
 
     public OutputView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -49,20 +49,25 @@ public class OutputView extends BaseView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         mPaint = new Paint();
-
+        /*mPaint.setStrokeWidth(10);
         mPaint.setAntiAlias(true);//抗锯齿
         mPaint.setColor(Color.BLACK);
         mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeWidth(5);
-        canvas.drawRect(new Rect(0, 90, 650, 450), mPaint);
-        mPaint.setColor(Color.GRAY);
-        mPaint.setStrokeWidth(3);
-        canvas.drawLine(0, 180, 650, 180, mPaint);
-        canvas.drawLine(0, 270, 650, 270, mPaint);
-        canvas.drawLine(0, 360, 650, 360, mPaint);
+        canvas.drawRect(new RectF(0, 90, 650, 450), mPaint);*/
+
+
+        Paint linePaint=new Paint();
+        linePaint.setStyle(Paint.Style.FILL);
+        linePaint.setColor(Color.GRAY);
+        linePaint.setStrokeWidth(3);
+        canvas.drawLine(0, 180, 650, 180, linePaint);
+        canvas.drawLine(0, 270, 650, 270, linePaint);
+        canvas.drawLine(0, 360, 650, 360, linePaint);
+
         mPaint.setColor(Color.GRAY);
         mPaint.setStrokeWidth(1);
-        mPaint.setTextSize(35);
+        mPaint.setTextSize(40);
+        mPaint.setStyle(Paint.Style.FILL);
         canvas.drawText("Graphic",250,50,mPaint);
     }
     float dx=0;
