@@ -5,7 +5,6 @@ import android.graphics.BitmapFactory;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 import cn.wsy.water.R;
 import cn.wsy.water.base.ThreeView;
@@ -159,6 +158,7 @@ public class ViewEditProvider {
         knobView.setLayoutParams(params);
 //        knobView.setX(x);
 //        knobView.setY(y);
+        knobView.setPause(true);
         knobView.setPopListener(listener);
         return knobView;
     }

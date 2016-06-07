@@ -47,7 +47,10 @@ import java.util.List;
 import java.util.Set;
 
 import cn.wsy.water.adapters.BlueItemAdapter;
+import cn.wsy.water.adapters.MyLayoutAdapter;
 import cn.wsy.water.app.BlueDevice;
+import cn.wsy.water.app.ViewApplication;
+import cn.wsy.water.db.LayoutIndexBean;
 import cn.wsy.water.views.MyListview;
 
 
@@ -74,7 +77,7 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
 
     public static MainActivity instance;
 
-    private int fragmentTAG = -1;//0 MAIN 1 EDIT 2 AGINEDIT 用于标识不同的fragment时的区分
+    private int fragmentTAG = 0;//0 MAIN 1 EDIT 2 AGINEDIT 用于标识不同的fragment时的区分
 
     //傳感器
     private SensorManager mSensorManager;
@@ -94,6 +97,11 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
     private BlueDevice mBlueDevice;
     private TextView device_name;
     private TextView device_address;
+
+    //mylayout
+    private MyListview layoutListview;
+    List<LayoutIndexBean> layoutIDs = new ArrayList<>();
+    private MyLayoutAdapter layoutAdapter;
 
 
     private Handler handler = new Handler() {
@@ -125,10 +133,15 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
                 showSaveBtn();
 
             } else if (msg.what == 1002) {
+                transaction = fragmentManager.beginTransaction();
+                if (fragmentTAG == 0){
+                    //如果已经是本身替换即可
+                 mainFragment.initView();
+                    return ;
+                }
 
                 fragmentTAG = 0;
 
-                transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.main_contaner, mainFragment);
                 transaction.commit();
                 leftListview.setEnabled(false);
@@ -397,6 +410,7 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
     private void initView() {
         instance = this;
         leftListview = (MyListview) findViewById(R.id.listview_views);
+        layoutListview = (MyListview) findViewById(R.id.listview_layout);
         opreationLv = (MyListview) findViewById(R.id.listview_action);
         drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer);
         drawerTogglerBtn = (ImageView) findViewById(R.id.main_drawer_btn);
@@ -415,7 +429,12 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
         opreationLv.setAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, opreations));
 
-        leftListview.setEnabled(false);
+
+        layoutIDs = ViewApplication.getInstance().getLayoutIDs();
+
+        layoutAdapter = new MyLayoutAdapter(layoutIDs, this, false);
+
+        layoutListview.setAdapter(layoutAdapter);
 
     }
 
@@ -440,6 +459,43 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
             @Override
             public void onClick(View v) {
                 openDrawer();
+            }
+        });
+
+        drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                ViewApplication.getInstance().readDataBaseForView();
+                layoutIDs = ViewApplication.getInstance().getLayoutIDs();
+                layoutAdapter = new MyLayoutAdapter(layoutIDs,MainActivity.this,false);
+               layoutListview.setAdapter(layoutAdapter);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
+
+        layoutListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                ViewApplication.getInstance().readView(layoutIDs.get(position).getLayout_id());
+
+                MainActivity.instance.showMyLayout();
+
+                closeDrawer();
             }
         });
 
@@ -569,11 +625,11 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
         Log.i("kevin", "生命周期结束");
     }
 
-    private void openDrawer() {
+    public void openDrawer() {
         drawerLayout.openDrawer(slDrawerLayout);
     }
 
-    private void closeDrawer() {
+    public void closeDrawer() {
         drawerLayout.closeDrawer(slDrawerLayout);
     }
 

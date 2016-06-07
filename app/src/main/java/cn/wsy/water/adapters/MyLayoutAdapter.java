@@ -4,28 +4,19 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import cn.wsy.water.EditFragment;
 import cn.wsy.water.MainActivity;
 import cn.wsy.water.R;
 import cn.wsy.water.app.ViewApplication;
-import cn.wsy.water.base.BaseView;
 import cn.wsy.water.db.LayoutIndexBean;
 import cn.wsy.water.db.ViewDB;
 
@@ -38,10 +29,18 @@ public class MyLayoutAdapter extends BaseAdapter {
     Context context;
 
     private ViewDB viewDB;
+    private boolean isShowAll = true;
 
     public MyLayoutAdapter(List<LayoutIndexBean> layoutIDs, Context context) {
         this.layoutIDs = layoutIDs;
         this.context = context;
+        viewDB = ViewDB.getInstance(context);
+    }
+
+    public MyLayoutAdapter(List<LayoutIndexBean> layoutIDs, Context context, boolean isShowAll) {
+        this.layoutIDs = layoutIDs;
+        this.context = context;
+        this.isShowAll = isShowAll;
         viewDB = ViewDB.getInstance(context);
     }
 
@@ -92,12 +91,18 @@ public class MyLayoutAdapter extends BaseAdapter {
 
                 //缓存中读取layout
                 ViewApplication.getInstance().readView(bean.getLayout_id());
-
-                ((Activity)context).finish();
-
+                if (isShowAll) {
+                    ((Activity) context).finish();
+                }else{
+                    MainActivity.instance.closeDrawer();
+                }
                 MainActivity.instance.showAgainEditLayout();
             }
         });
+
+        if (!isShowAll){
+            holder.createTime.setVisibility(View.GONE);
+        }
 
         return paramView;
     }

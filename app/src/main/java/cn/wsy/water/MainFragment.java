@@ -45,7 +45,7 @@ public class MainFragment extends Fragment {
         initView();
     }
 
-    private void initView() {
+    public void initView() {
         mainLayout = (FrameLayout) getActivity().findViewById(R.id.main_contaner_layout);
         noViewTip = (TextView) getActivity().findViewById(R.id.main_noview_tip);
 
@@ -68,7 +68,7 @@ public class MainFragment extends Fragment {
     }
 
     private void addViews(View view) {
-        noViewTip.setVisibility(View.GONE);
+//        noViewTip.setVisibility(View.GONE);
         mainLayout.addView(view);
     }
 

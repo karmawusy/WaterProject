@@ -65,6 +65,7 @@ public class WheelView extends RelativeLayout {
         parentLayout = (LinearLayout) findViewById(R.id.wheel_layout);
 
         if (popListener != null) {
+            if (!isPause)
             popListener.showEditPopWindow(Contacts.WHELLVIEW_TYPE, this, R.layout.dpad_layout);
             setOnClickAction(leftBtn);
             setOnClickAction(rightBtn);
