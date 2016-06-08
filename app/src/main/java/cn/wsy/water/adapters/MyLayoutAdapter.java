@@ -119,6 +119,8 @@ public class MyLayoutAdapter extends BaseAdapter {
 
                 layoutIDs = ViewApplication.getInstance().getLayoutIDs();
 
+                MainActivity.instance.refreshMainFragmentView(bean.getLayout_id());
+
                 notifyDataSetChanged();
             }
         })

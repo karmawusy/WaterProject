@@ -13,6 +13,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import cn.wsy.water.app.ViewApplication;
+import cn.wsy.water.db.LayoutIndexBean;
 import cn.wsy.water.db.ViewConfig;
 import cn.wsy.water.utils.ViewShowProvider;
 
@@ -27,6 +28,7 @@ public class MainFragment extends Fragment {
     private TextView noViewTip;
     private ViewShowProvider mViewShowProvider;
 
+    private String currentLayoutId = "";
 
     public MainFragment() {
         // Required empty public constructor
@@ -81,9 +83,13 @@ public class MainFragment extends Fragment {
             MainActivity.instance.setTitle(viewConfigs.get(0).getLayout_name());
     }
 
+    public String getCurrentLayoutId() {
+        return currentLayoutId;
+    }
+
     private void getView(ViewConfig viewConfig) {
         int type = viewConfig.view_Type;
-
+        currentLayoutId = viewConfig.getLayout_id();
         int defalut_color = 0;
 
         int press_color = 0;
@@ -133,6 +139,19 @@ public class MainFragment extends Fragment {
 
     public void updateMainData(Bundle bundle) {
         mViewShowProvider.updateMainViewData(bundle);
+    }
+
+    public void refreshLayout(List<LayoutIndexBean> all) {
+
+        mainLayout.removeAllViews();
+        MainActivity.instance.setTitle("");
+        if (all != null && all.size() >0) {
+            ViewApplication.getInstance().readView(all.get(0).getLayout_id());
+            List<ViewConfig> viewConfigs = ViewApplication.getInstance().getViewConfigs();
+            if (viewConfigs.size() > 0) {
+                getViewForDb(viewConfigs);
+            }
+        }
     }
 
 }

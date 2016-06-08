@@ -748,6 +748,16 @@ public class MainActivity extends Activity implements SensorEventListener, Adapt
 
     }
 
+    //决定是否要更新删除后的布局
+    public void refreshMainFragmentView(String layoutId){
+        if (mainFragment.getCurrentLayoutId().equals(layoutId)){
+            //如果更好删除的是当前布局，则重新加载最新的布局
+            ViewApplication.getInstance().readDataBaseForView();
+            layoutIDs = ViewApplication.getInstance().getLayoutIDs();
+            mainFragment.refreshLayout(layoutIDs);
+        }
+    }
+
 }
 
 
